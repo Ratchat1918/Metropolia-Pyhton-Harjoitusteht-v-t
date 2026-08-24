@@ -1,0 +1,5 @@
+1 Lisää esine inventaarioon\n
+2 Tulosta inventaario\n
+3 Poista satunnainen esine\n
+4 mennä seuravaan huoneseen\n
+"lopeta: Lopeta"\n
