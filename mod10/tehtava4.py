@@ -30,12 +30,29 @@ auto_lista = [
     Auto("ABC-132", 142),
     Auto("ABC-132", 142)
 ]
-x = True
-while x:
-    for auto in auto_lista:
-        auto.kiihtya(random.randint(10,15))
-        auto.kulje(1)
-        print(auto.rekestritunnus, auto.kuljettu_matka, auto.nyky_nopeus)
-        if auto.kuljettu_matka>=10000:
-            x = False
-            break
+class Suuri_romurali:
+    def __init__(self, auto_lista, matka):
+        self.auto_lista = auto_lista
+        self.matka = matka
+        self.tunnit = 0
+    def tunti_kuulu(self):
+        for auto in self.auto_lista:
+            auto.kiihtya(random.randint(10,15))
+            auto.kulje(1)
+            self.tunnit+=1
+    def tulosta_tilanne(self):
+        if self.tunnit>=10:
+            self.tunnit = 0
+            for auto in self.auto_lista:
+                print(auto.rekestritunnus, auto.nyky_nopeus, auto.kuljettu_matka)
+    def kilpaiu_ohi(self):
+        for auto in auto_lista:
+            if auto.kuljettu_matka>=8000:
+                print(f"Voittaja: {auto.rekestritunnus}")
+                return True
+new_race = Suuri_romurali(auto_lista, 8000)
+while True:
+    new_race.tunti_kuulu()
+    new_race.tulosta_tilanne()
+    if new_race.kilpaiu_ohi()==True:
+        break
