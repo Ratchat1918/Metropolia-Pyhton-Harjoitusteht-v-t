@@ -17,25 +17,23 @@ class Auto:
         uusi_matka = self.nyky_nopeus * tunnit
         self.kuljettu_matka+=uusi_matka
 auto_lista = [
-    Auto("ABC-123", 142),
-    Auto("ABC-124", 142),
-    Auto("ABC-124", 142),
-    Auto("ABC-125", 142),
-    Auto("ABC-126", 142),
-    Auto("ABC-127", 142),
-    Auto("ABC-128", 142),
-    Auto("ABC-129", 142),
-    Auto("ABC-130", 142),
-    Auto("ABC-131", 142),
-    Auto("ABC-132", 142),
-    Auto("ABC-132", 142)
+    Auto("ABC-1", random.randint(100,200)),
+    Auto("ABC-2", random.randint(100,200)),
+    Auto("ABC-3", random.randint(100,200)),
+    Auto("ABC-4", random.randint(100,200)),
+    Auto("ABC-5", random.randint(100,200)),
+    Auto("ABC-6", random.randint(100,200)),
+    Auto("ABC-7", random.randint(100,200)),
+    Auto("ABC-8", random.randint(100,200)),
+    Auto("ABC-9", random.randint(100,200)),
+    Auto("ABC-10", random.randint(100,200))
 ]
 x = True
 while x:
     for auto in auto_lista:
         auto.kiihtya(random.randint(10,15))
         auto.kulje(1)
-        print(auto.rekestritunnus, auto.kuljettu_matka, auto.nyky_nopeus)
+        print(f"Reksestritunnus: {auto.rekestritunnus}, Auton matka: {auto.kuljettu_matka}, Nopeus: {auto.nyky_nopeus}")
         if auto.kuljettu_matka>=10000:
             x = False
             break
