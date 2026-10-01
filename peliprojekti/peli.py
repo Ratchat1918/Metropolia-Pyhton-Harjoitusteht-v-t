@@ -1,82 +1,86 @@
-import random
-from pathlib import Path
+import json
 from pelaaja import Pelaaja
 from huone import Huone
 from esine import Esine
 
-key_to_next_room = Esine("Key to the next room", 18.6)
-bag_of_holding = Esine("Bag of holding", 0)
-starting_room = Huone("Starting room", key_to_next_room)
-room2 = Huone("Room 2", bag_of_holding)
-final_room = Huone("Final room", None)
+storage_key = Esine("Storage Key", "a small metalic key meant for opening a storage room with your stuff")
+bucket = Esine("Bucket", "wooden bucket you use to keep your mop wet and floors human remains free")
+water_bucket = Esine("Water Bucket", "same bucket but now actuallu usable")
+corridor =Huone("Corridor", [], "There's a long ")
+entrance_room = Huone("Entrance", [], "The entrance into the dungeone looks like always ")
+storage_room = Huone("Storage Room", [], "The entrance into the dungeone looks like always ")
+exit_room = Huone("Exit", [], "Small room ")
+room_list = [entrance_room]
 
-rooms = {
-    starting_room.nimi: starting_room,
-    room2.nimi: room2,
-    final_room.nimi: final_room,
-}
+def print_instruction():
+    try:
+        with open("ohjeet.txt", "r") as instructuion_file:
+            instructuion_text = instructuion_file.readlines()
+            for line in intro_text:
+                print(line)
+    except FileNotFoundError:
+        print("file ohjeet.txt does not exist")
 
-game_state_path = Path(__file__).parent / "game_state.txt"
-with open(game_state_path, "r", encoding="utf-8") as game_state_file:
-    lines = game_state_file.readlines()
+while True:
+    print("Enter number according to your choice")
+    print("1. New game\n2. Continue Game")
+    start_choice = int(input("Enter choice: "))
+    if start_choice == 1:
+        with open("game_state.txt", "w") as game_state_file:
+            json.dump({}, game_state_file)
+        with open("game_state.txt", "r") as game_state_file:
+            game_state_info = json.load(game_state_file)
+        break
+    elif start_choice == 2:
+        try:
+            with open("game_state.txt", "r") as game_state_file:
+                game_state_info = json.load(game_state_file)
+        except FileNotFoundError:
+            print("save not found, creating new game")
+            with open("game_state.txt", "w") as game_state_file:
+                json.dump({}, game_state_file)
+            with open("game_state.txt", "r") as game_state_file:
+                game_state_info = json.load(game_state_file)
+        break
+    else:
+        print("Unknown option, choose a valid option")
 
-if len(lines) < 3:
-    name = input("Enter name: ")
-    age = int(input("Enter age: "))
-    new_player = Pelaaja(name, age, starting_room)
+if len(game_state_info) < 3:
+    name_input = input("Enter name: ")
+    age_input = int(input("Enter age: "))
+    player_obj = Pelaaja(name_input, age_input, "Entrance", [])
+    player_save_data_object = {
+        "name": name_input,
+        "age": age_input,
+        "location": "Entrance",
+        "iventory": [],
+        "entranceObjective": False,
+        "secondRoomObjective": False,
+        "storageRoomObjective": False,
+        'exitRoomObjective': False
+    }
+    with open("game_state.txt", "w") as game_state_file:
+        json.dump(player_save_data_object, game_state_file)#creates player object and saves it in a text file
 else:
-    name = lines[0].strip()
-    age = int(lines[1].strip())
-    sijainti = rooms[lines[2].strip()]
-    new_player = Pelaaja(name, age, sijainti)
-
-with open(game_state_path, "w",) as game_state_file:
-    game_state_file.write(f"{name}\n{age}\n{new_player.sijainti.nimi}\n")
-
-if new_player.ika < 12:
-    print("Ikä on liian pieni")
+    name = game_state_info["name"]
+    age = game_state_info["age"]
+    location = game_state_info["location"]
+    inventory = game_state_info["iventory"]
+    player_obj = Pelaaja(name, age, location, inventory )
+if int(player_obj.ika) < 12:
+    print("You are too young to play this.\nCome back when you're older")#loads player info and creates player object with it
 else:
-    intro = Path(__file__).parent / "intro.txt"
-    with open(intro, "r") as file:
-         for i in file:
-            print(i.rstrip())
-    while True:
-        print(f"{name}, {age}")
-        if new_player.sijainti == starting_room:
-            print(f"You see a key to the next room")
-        ohjeet = Path(__file__).parent / "ohjeet.txt"
-        with open(ohjeet, "r") as file:
-            for i in file:
-                    print(i.rstrip())
-        command = input("Syötä komento: ")
-        if command == "lopeta":
-            break
-        elif command == "1":
-            if new_player.sijainti.esine is not None:
-                new_player.keraa_esine(new_player.sijainti.esine)
-                new_player.sijainti.esine = None
-            else:
-                print("Huoneessa ei ole esinettä.")
-        elif command == "2":
-            for item in new_player.esineet:
-                print(f"Items: \n{item.nimi}")
-        elif command == "3":
-            if new_player.esineet:
-                item = random.choice(new_player.esineet)
-                new_player.esineet.remove(item)
-                print(f"Poistettiin: {item.nimi}")
-        elif command == "4":
-            if key_to_next_room in new_player.esineet and new_player.sijainti == starting_room:
-                new_player.liikua(room2)
-                print(new_player.sijainti)
-                with open(game_state_path, "w",) as game_state_file:
-                    game_state_file.write(f"{name}\n{age}\n{new_player.sijainti.nimi}\n")
-            elif new_player.sijainti == room2:
-                new_player.liikua(final_room)
-                print(new_player.sijainti)
-                with open(game_state_path, "w",) as game_state_file:
-                    game_state_file.write(f"{name}\n{age}\n{new_player.sijainti.nimi}\n")
-            else:
-                print("The door is locked")
-        else:
-            print("Inventaario on tyhjä.")
+    with open("intro.txt", "r") as intro_file:
+        intro_text = intro_file.readlines()
+        for line in intro_text:
+            print(line)
+    print("Welcome!",player_obj.nimi)
+
+game_on = True
+
+while game_on:
+    if player_obj.sijainti == "Entrance":
+        print(entrance_room.kuvaus)
+    print_instruction()
+    choice = int(input("Enter choice: "))
+    if 

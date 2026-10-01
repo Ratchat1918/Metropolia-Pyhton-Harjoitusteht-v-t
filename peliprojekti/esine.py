@@ -1,4 +1,4 @@
 class Esine:
-    def __init__(self, nimi, paino:float):
+    def __init__(self, nimi, kuvaus):
         self.nimi = nimi
-        self.paino = paino
+        self.kuvaus = kuvaus 
