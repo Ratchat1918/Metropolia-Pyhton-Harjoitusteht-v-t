@@ -1,13 +1,14 @@
 class Pelaaja:
-    def __init__(self, nimi, ika, sijainti, inventaario):
+    def __init__(self, nimi, ika, sijainti, inventaario, entranceObjective, fountainRoomObjective):
         self.nimi = nimi
         self.ika = int(ika)
         self.inventaario = inventaario
         self.sijainti = sijainti
+        self.entranceObjective = entranceObjective
+        self.fountainRoomObjective = fountainRoomObjective
     def liikua(self, kohde):
         self.sijainti = kohde
-        print(f"Nykyinen sijainti: {self.sijainti}")
     def keraa_esine(self, item):
         if item is not None:
-            self.esineet.append(item)
-            print(f"Kerättiin: {item.nimi}")
+            self.inventaario.append(item)
+            print(f"Picked up: {item}")

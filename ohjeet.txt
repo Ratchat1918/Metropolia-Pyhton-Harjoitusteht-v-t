@@ -1,5 +1,5 @@
 1. Examine the room
-2. Go to the nenxt room
+2. Go to the next room
 3. Go to previous room
 4. Check inventory
 0. Finish game
