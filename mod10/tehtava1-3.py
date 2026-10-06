@@ -27,7 +27,7 @@ class Talo:
         self.hissien_maara = hissien_maara
         self.hissien_lista = []
         for i in range(hissien_maara):
-            new_elevator = Hissi(alimman, ylimman)
+            new_elevator = Hissi(self.alimman, self.ylimman)
             self.hissien_lista.append(new_elevator)
     def aja_hissia(self,hissi_numero, kohdekerros):
         hissi = self.hissien_lista[hissi_numero]

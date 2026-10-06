@@ -41,114 +41,6 @@ def find_item(player_item):#used to find current room in order to move player in
             break
     return current_item
 
-def examine_room(player_obj):#hoooly repeating code
-    player_location = player_obj.sijainti
-    match player_location:
-        case "Entrance":
-            print("You notice there's quite a bit of rubish around the gates of the dungeon.")
-            print("1. Pick up the trash\n2. Go back to previous option")
-            choice = int(input("Enter your choice: "))
-            if choice == 1:
-                print("You go around the area meticulously picking up trash")
-                player_obj.keraa_esine("Trash")
-            elif choice == 2:
-                pass
-            else:
-                print("Unknown option, choose a valid option")
-        case "Staircase":
-            print("You notice a small halflings body laying upon the bottom of the stairs, poor bastard must have triggered a trap")
-            print("1. Examine the body\n2. Go back to previous option")
-            choice = int(input("Enter your choice: "))
-            if choice == 1:
-                print("You turn over the body and see the halfling clutching something in his hand")
-                player_obj.keraa_esine("Storage Key")
-            elif choice == 2:
-                pass
-            else:
-                print("Unknown option, choose a valid option")
-        case "Fountain Room":
-            print("You notice besides the fountain there's a pool of blood and trash cans, conveniently marked for different trash types")
-            if "Trash" in player_obj.inventaario and "Bucket" in player_obj.inventaario:
-                print("1. Throw away the trash\n2. Pour some water into the bucket\n3. Go back to previous option")
-                choice = int(input("Enter your choice: "))
-                if choice == 1:
-                    print("You throw away the trash into the correct trash types, you feel great!")
-                    player_obj.inventaario.remove("Trash")
-                    player_obj.entranceObjective = True
-                elif choice == 2:
-                    print("You put you bucket under the ")
-                    player_obj.inventaario.remove("Bucket")
-                    player_obj.keraa_esine("Water Bucket")
-                    player_obj.fountainRoomObjective = True
-                elif choice == 3:
-                    pass
-                else:
-                    print("Unknown option, choose a valid option")
-            elif "Trash" in player_obj.inventaario and "Bucket" not in player_obj.inventaario:
-                print("1. Throw away the trash\n2. Go back to previous option")
-                choice = int(input("Enter your choice: "))
-                if choice == 1:
-                    print("You throw away the trash into the correct trash types, you feel great!")
-                    player_obj.inventaario.remove("Trash")
-                    player_obj.entranceObjective = True
-                elif choice == 2:
-                    pass
-                else:
-                    print("Unknown option, choose a valid option")
-            elif "Bucket" in player_obj.inventaario and "Trash" not in player_obj.inventaario:
-                print("1. Pour some water into the bucket\n2. Go back to previous option")
-                choice = int(input("Enter your choice: "))
-                if choice == 1:
-                    print("You put you bucket under the ")
-                    player_obj.inventaario.remove("Bucket")
-                    player_obj.keraa_esine("Water Bucket")
-                elif choice == 2:
-                    pass
-                else:
-                    print("Unknown option, choose a valid option")
-            elif "Water Bucket" in player_obj.inventaario and "Trash" not in player_obj.inventaario:
-                print("1. Clean up the blood\n2. Go back to previous option")
-                choice = int(input("Enter your choice: "))
-                if choice == 1:
-                    print("You take your time cleaning the blood of the floor")
-                    player_obj.fountainRoomObjective = True
-                elif choice == 2:
-                    pass
-                else:
-                    print("Unknown option, choose a valid option")
-            elif "Water Bucket" in player_obj.inventaario and "Trash" in player_obj.inventaario:
-                print("1. Throw away the trash\n2. Clean up the blood\n3. Go back to previous option")
-                choice = int(input("Enter your choice: "))
-                if choice == 1:
-                    print("You throw away the trash into the correct trash types, you feel great!")
-                    player_obj.inventaario.remove("Trash")
-                    player_obj.entranceObjective = True
-                elif choice == 2:
-                    print("You take your time cleaning the blood of the floor")
-                    player_obj.fountainRoomObjective = True
-                elif choice == 3:
-                    pass
-                else:
-                    print("Unknown option, choose a valid option")
-        case "Storage Room":
-            print("The storage is cramped but, you see your bucket as well as an exit")
-            if "Storage Key" in player_obj.inventaario:
-                print("1. Open the storage room with your key\n2. Go back to previous option")
-                choice = int(input("Enter your choice: "))
-                if choice == 1:
-                    print("You put you bucket under the ")
-                    player_obj.inventaario.remove("Storage Key")
-                    player_obj.keraa_esine("Bucket")
-                    storage_room.kuvaus = "The storage is cramped but, you see your bucket as well as an exit"
-                elif choice == 2:
-                    pass
-                else:
-                    print("Unknown option, choose a valid option")
-        case "Exit":
-            print("It's an exit, it looks like an unremarkable wooden door")
-        case _:
-            print("Unkown room")
-
 def save_game(player_obj):
     player_save_data_object = {
             "name": player_obj.nimi,
@@ -168,6 +60,125 @@ def print_ending(player_obj):
         print("Ending 2")
     elif player_obj.entranceObjective == False and player_obj.fountainRoomObjective == True:
         print("Ending 3")
+
+def examine_room(player_obj):#hoooly repeating code
+    player_location = player_obj.sijainti
+    match player_location:
+        case "Entrance":
+            print("You notice there's quite a bit of rubish around the gates of the dungeon.")
+            print("1. Pick up the trash\n2. Go back to previous option")
+            choice = int(input("Enter your choice: "))
+            if choice == 1:
+                print("You go around the area meticulously picking up trash")
+                player_obj.keraa_esine("Trash")
+                save_game(player_obj)
+            elif choice == 2:
+                pass
+            else:
+                print("Unknown option, choose a valid option")
+        case "Staircase":
+            print("You notice a small halflings body laying upon the bottom of the stairs, poor bastard must have triggered a trap")
+            print("1. Examine the body\n2. Go back to previous option")
+            choice = int(input("Enter your choice: "))
+            if choice == 1:
+                print("You turn over the body and see the halfling clutching something in his hand")
+                player_obj.keraa_esine("Storage Key")
+                save_game(player_obj)
+            elif choice == 2:
+                pass
+            else:
+                print("Unknown option, choose a valid option")
+        case "Fountain Room":
+            print("You notice besides the fountain there's a pool of blood and trash cans, conveniently marked for different trash types")
+            if "Trash" in player_obj.inventaario and "Bucket" in player_obj.inventaario:
+                print("1. Throw away the trash\n2. Pour some water into the bucket\n3. Go back to previous option")
+                choice = int(input("Enter your choice: "))
+                if choice == 1:
+                    print("You throw away the trash into the correct trash types, you feel great!")
+                    player_obj.inventaario.remove("Trash")
+                    player_obj.entranceObjective = True
+                    save_game(player_obj)
+                elif choice == 2:
+                    print("You put you bucket under the ")
+                    player_obj.inventaario.remove("Bucket")
+                    player_obj.keraa_esine("Water Bucket")
+                    player_obj.fountainRoomObjective = True
+                    save_game(player_obj)
+                elif choice == 3:
+                    pass
+                else:
+                    print("Unknown option, choose a valid option")
+            elif "Trash" in player_obj.inventaario and "Bucket" not in player_obj.inventaario:
+                print("1. Throw away the trash\n2. Go back to previous option")
+                choice = int(input("Enter your choice: "))
+                if choice == 1:
+                    print("You throw away the trash into the correct trash types, you feel great!")
+                    player_obj.inventaario.remove("Trash")
+                    player_obj.entranceObjective = True
+                    save_game(player_obj)
+                elif choice == 2:
+                    pass
+                else:
+                    print("Unknown option, choose a valid option")
+            elif "Bucket" in player_obj.inventaario and "Trash" not in player_obj.inventaario:
+                print("1. Pour some water into the bucket\n2. Go back to previous option")
+                choice = int(input("Enter your choice: "))
+                if choice == 1:
+                    print("You put you bucket under the ")
+                    player_obj.inventaario.remove("Bucket")
+                    player_obj.keraa_esine("Water Bucket")
+                    save_game(player_obj)
+                elif choice == 2:
+                    pass
+                else:
+                    print("Unknown option, choose a valid option")
+            elif "Water Bucket" in player_obj.inventaario and "Trash" not in player_obj.inventaario:
+                print("1. Clean up the blood\n2. Go back to previous option")
+                choice = int(input("Enter your choice: "))
+                if choice == 1:
+                    print("You take your time cleaning the blood of the floor")
+                    player_obj.fountainRoomObjective = True
+                    save_game(player_obj)
+                elif choice == 2:
+                    pass
+                else:
+                    print("Unknown option, choose a valid option")
+            elif "Water Bucket" in player_obj.inventaario and "Trash" in player_obj.inventaario:
+                print("1. Throw away the trash\n2. Clean up the blood\n3. Go back to previous option")
+                choice = int(input("Enter your choice: "))
+                if choice == 1:
+                    print("You throw away the trash into the correct trash types, you feel great!")
+                    player_obj.inventaario.remove("Trash")
+                    player_obj.entranceObjective = True
+                    save_game(player_obj)
+                elif choice == 2:
+                    print("You take your time cleaning the blood of the floor")
+                    player_obj.fountainRoomObjective = True
+                    save_game(player_obj)
+                elif choice == 3:
+                    pass
+                else:
+                    print("Unknown option, choose a valid option")
+        case "Storage Room":
+            print("The storage is cramped but, you see your bucket as well as an exit")
+            if "Storage Key" in player_obj.inventaario:
+                print("1. Open the storage room with your key\n2. Go back to previous option")
+                choice = int(input("Enter your choice: "))
+                if choice == 1:
+                    print("You put you bucket under the ")
+                    player_obj.inventaario.remove("Storage Key")
+                    player_obj.keraa_esine("Bucket")
+                    save_game(player_obj)
+                    storage_room.kuvaus = "The storage is cramped but, you see your bucket as well as an exit"
+                elif choice == 2:
+                    pass
+                else:
+                    print("Unknown option, choose a valid option")
+        case "Exit":
+            print("It's an exit, it looks like an unremarkable wooden door")
+            save_game(player_obj)
+        case _:
+            print("Unkown room")
 
 while True:
     print("Enter number according to your choice")
