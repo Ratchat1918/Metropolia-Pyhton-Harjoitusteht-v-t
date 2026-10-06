@@ -60,6 +60,8 @@ def print_ending(player_obj):
         print("Ending 2")
     elif player_obj.entranceObjective == False and player_obj.fountainRoomObjective == True:
         print("Ending 3")
+    elif player_obj.entranceObjective == False and player_obj.fountainRoomObjective == True:
+        print("Ending 4")
 
 def examine_room(player_obj):#hoooly repeating code
     player_location = player_obj.sijainti
