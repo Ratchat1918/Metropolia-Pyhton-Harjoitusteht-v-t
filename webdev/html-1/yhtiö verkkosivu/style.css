@@ -26,21 +26,24 @@ body{
     display: flex;
     margin: 0;
     padding: 0;
-    width: 100%
+    width: 100%;
+    list-style: none;
 }
-.header ul a:first-child{
+.header ul li:first-child{
     margin-right: auto;
-    margin-left: 0;
+}
+.header ul li:first-child a{
     width: 6em;
     color: #A3C9A8;
     background-color: #2e4d3d;
     text-align: center;
 }
-.header a:first-child:hover{
+.header ul li:first-child a:hover{
     cursor: default;
     background-color: #2e4d3d;
 }
 .header a{
+    display: block;
     color: #2e4d3d;
     padding: 1em;
     text-decoration: none;
