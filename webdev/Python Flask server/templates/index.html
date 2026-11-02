@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="fetchNumber(event)">
+        <label for="number_input">Enter a number to check if it is a prime number</label>
+        <input id="number_input" type="text">
+        <input type="submit">
+    </form>
+    <p id="result"></p>
+    <form onsubmit="translateWord(event)">
+        <label for="word_input">Enter a word to translate</label>
+        <input id="word_input" type="text">
+        <input type="submit">
+    </form>
+    <p id="translate_result"></p>
+</body>
+<script>
+    async function fetchNumber(event){
+        event.preventDefault();
+        const number = event.target[0].value;
+        const response = await fetch(`http://127.0.0.1:5000/check_number/${number}`);
+        const json = await response.json();
+        console.log(json);
+        if(json.isPrime == true){
+            document.getElementById("result").innerText = `${number} is a prime number`
+        }else{
+            document.getElementById("result").innerText = `${number} is not a prime number`
+        }
+    };
+    async function translateWord(event){
+        event.preventDefault();
+        const word = event.target[0].value;
+         const response = await fetch(`http://127.0.0.1:5000/translate/${word}`);
+        const json = await response.json();
+        console.log(json)
+        if(json == undefined){
+            document.getElementById("translate_result").innerText = `${json.error}`
+        }else{
+            document.getElementById("translate_result").innerText = `${json.Finish}`
+        }
+    };
+</script>
+</html>
