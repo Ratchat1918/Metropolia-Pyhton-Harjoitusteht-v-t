@@ -9,6 +9,20 @@
     
 </body>
 <script>
-    
+    let number_of_dice = Number(prompt("Enter number of dice: "));
+    let sum_of_sides = Number(prompt("Enter sum of the sides of the dice"));
+    let sum_equal_input = 0;
+    for(let i = 0; i < 100000; i++){
+        let sum_of_sides_sim = 0;
+        for(x = number_of_dice; x > 0; x--){
+            let side = Math.floor(Math.random() * 6);
+            sum_of_sides_sim+=side;
+        };
+        if(sum_of_sides_sim == sum_of_sides){
+            sum_equal_input++
+        };
+    };
+    let probability = sum_equal_input / 100000;
+    document.querySelector("body").innerHTML = `<p>Probability to get sum ${sum_of_sides} with ${number_of_dice} dice is ${parseFloat(probability*100).toFixed(0)}</p>`
 </script>
 </html>

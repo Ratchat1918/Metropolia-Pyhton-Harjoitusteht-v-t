@@ -9,6 +9,29 @@
     
 </body>
 <script>
-    
+    let canditates_amount = Number(prompt("Enter a number of candidates: "))
+    let canditates_array = [];
+    for(let canditate = 0; canditate < canditates_amount; canditate++){
+        let canditate_input = prompt(`Enter name for canditate ${canditate+1}`);
+        canditates_array.push({
+            name: canditate_input,
+            votes: 0
+        });
+    }
+    let voter_amount = Number(prompt("Enter a number of voters: "));
+    for(let voter = 0; voter < voter_amount; voter++){
+        let vote_for = prompt("Enter candidate to vote for");
+        for(let x = 0; x < canditates_amount; x ++){
+            if(vote_for == canditates_array[x].name){
+                canditates_array[x].votes++
+                break;
+            }else{
+                continue
+            };
+        };
+    }
+    canditates_array.forEach(candidate =>{
+        document.querySelector("body").innerHTML += `<p>${candidate.name}: ${candidate.votes}</p>`;
+    })
 </script>
 </html>
