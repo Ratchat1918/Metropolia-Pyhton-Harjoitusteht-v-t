@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form >
+        <input id="query" name="q" type="text" />
+        <input type="submit" value="Search" />
+    </form>
+    <div id="results"></div>
+</body>
+<script>
+    var results = document.getElementById("results");
+    document.querySelector("form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        try{
+          let value_from_input = document.querySelector("#query").value;
+        fetch(`https://api.tvmaze.com/search/shows?q=${value_from_input}`)
+            .then((response) => response.json())
+            .then((data) => {
+                data.forEach(show => {
+                    let article =document.createElement("div");
+                    let h2 = document.createElement("h2");
+                    h2.textContent = show.show.name;
+                    let a = document.createElement("a");
+                    a.href = show.show.url;
+                    a.target = "_blank";
+                    let img = document.createElement("img");
+                    img.src = show.show.image?.medium;
+                    img.alt = show.show.name;
+                    article.appendChild(h2);
+                    article.appendChild(a);
+                    article.appendChild(img);
+                    results.appendChild(article);
+                });
+            });  
+        }catch(error){
+            console.log(error);
+        }
+    });
+</script>
+</html>
